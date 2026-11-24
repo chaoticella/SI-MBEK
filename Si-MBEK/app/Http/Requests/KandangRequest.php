@@ -23,14 +23,14 @@ class KandangRequest extends FormRequest
      */
     public function rules(): array
     {
-        $kandangId = $this->route('kandang') ? $this->route('kandang')->id ?? $this->route('kandang') : null;
+        $kandangId = $this->route('kandang') ? ($this->route('kandang')->id_kandang ?? $this->route('kandang')->id ?? $this->route('kandang')) : null;
 
         return [
             'blok_kandang' => [
                 'required',
                 'string',
                 'max:50',
-                Rule::unique('kandangs', 'blok_kandang')->ignore($kandangId),
+                Rule::unique('kandang', 'blok_kandang')->ignore($kandangId, 'id_kandang'),
             ],
             'kapasitas_maksimal' => ['required', 'integer', 'min:1', 'max:1000'],
             'kategori' => ['required', Rule::in(['jantan', 'betina', 'isolasi'])],

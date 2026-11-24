@@ -188,7 +188,7 @@ class Modul1Test extends TestCase
         ]);
 
         $response->assertRedirect('/kandang');
-        $this->assertDatabaseHas('kandangs', [
+        $this->assertDatabaseHas('kandang', [
             'blok_kandang' => 'Blok 99',
             'kapasitas_maksimal' => 35,
             'kategori' => 'betina',
@@ -233,8 +233,8 @@ class Modul1Test extends TestCase
         $this->actingAs($this->pengelola);
         $this->patch("/kandang/{$kandang->id}/toggle-status");
 
-        $this->assertDatabaseHas('kandangs', [
-            'id' => $kandang->id,
+        $this->assertDatabaseHas('kandang', [
+            'id_kandang' => $kandang->id,
             'status_aktif' => false,
         ]);
     }
@@ -258,14 +258,14 @@ class Modul1Test extends TestCase
             'keterangan' => 'Sudah diperbarui',
         ])->assertRedirect('/kandang');
 
-        $this->assertDatabaseHas('kandangs', [
-            'id' => $kandang->id,
+        $this->assertDatabaseHas('kandang', [
+            'id_kandang' => $kandang->id,
             'blok_kandang' => 'Blok Diperbarui',
             'kapasitas_maksimal' => 25,
             'kategori' => 'betina',
         ]);
 
         $this->delete("/kandang/{$kandang->id}")->assertRedirect('/kandang');
-        $this->assertDatabaseMissing('kandangs', ['id' => $kandang->id]);
+        $this->assertDatabaseMissing('kandang', ['id_kandang' => $kandang->id]);
     }
 }

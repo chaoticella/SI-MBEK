@@ -47,13 +47,13 @@ class DatabaseSeeder extends Seeder
             'status_aktif' => false,
         ]);
 
-        // 2. Seed Kandang data matching the screenshots
+        // 2. Seed Kandang data (Blok 1 - 5)
         Kandang::create([
             'blok_kandang' => 'Blok 1',
             'kapasitas_maksimal' => 25,
             'kategori' => 'jantan',
             'status_aktif' => true,
-            'keterangan' => 'Kandang kambing jantan indukan ras Kacang dan Saanen.',
+            'keterangan' => 'Kandang pejantan indukan ras Kacang dan Saanen.',
         ]);
 
         Kandang::create([
@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
             'kapasitas_maksimal' => 30,
             'kategori' => 'betina',
             'status_aktif' => true,
-            'keterangan' => 'Kandang kambing betina produktif, ras Boer dan Etawa.',
+            'keterangan' => 'Kandang kambing betina produktif ras Boer dan Etawa.',
         ]);
 
         Kandang::create([
@@ -69,7 +69,7 @@ class DatabaseSeeder extends Seeder
             'kapasitas_maksimal' => 10,
             'kategori' => 'isolasi',
             'status_aktif' => true,
-            'keterangan' => 'Kandang isolasi & karantina kambing bergejala sakit (Pneumonia, Cacingan).',
+            'keterangan' => 'Kandang karantina kambing bergejala sakit (Pneumonia, Cacingan).',
         ]);
 
         Kandang::create([
@@ -87,5 +87,10 @@ class DatabaseSeeder extends Seeder
             'status_aktif' => true,
             'keterangan' => 'Kandang penggemukan pejantan siap kawin.',
         ]);
+
+        // 3. Seed data kesehatan & kambing dari Modul 3
+        if (class_exists(KesehatanSeeder::class)) {
+            $this->call(KesehatanSeeder::class);
+        }
     }
 }

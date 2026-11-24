@@ -4,10 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Kandang extends Model
 {
     use HasFactory;
+
+    protected $table = 'kandang';
+    protected $primaryKey = 'id_kandang';
+
+    public const KATEGORI_ISOLASI = 'isolasi';
 
     protected $fillable = [
         'blok_kandang',
@@ -26,16 +32,36 @@ class Kandang extends Model
     }
 
     /**
-     * Scope for active kandangs
+     * Compatibility alias for id
      */
+    public function getIdAttribute()
+    {
+        return $this->attributes['id_kandang'] ?? null;
+    }
+
+    /**
+     * Relasi ke data kambing
+     */
+    public function kambing(): HasMany
+    {
+        return $this->hasMany(Kambing::class, 'id_kandang', 'id_kandang');
+    }
+
+    public function isIsolasi(): bool
+    {
+        return $this->kategori === self::KATEGORI_ISOLASI;
+    }
+
     public function scopeAktif($query)
     {
         return $query->where('status_aktif', true);
     }
 
-    /**
-     * Human-readable label for kategori
-     */
+    public function getLabelAttribute(): string
+    {
+        return 'Blok ' . $this->blok_kandang . ' (' . ucfirst($this->kategori) . ')';
+    }
+
     public function getKategoriLabelAttribute(): string
     {
         return match (strtolower($this->kategori ?? '')) {
@@ -46,20 +72,17 @@ class Kandang extends Model
         };
     }
 
-    /**
-     * Color badge class for UI
-     */
     public function getKategoriBadgeAttribute(): array
     {
         return match (strtolower($this->kategori ?? '')) {
             'jantan' => [
-                'bg' => 'bg-blue-50 text-blue-700 border-blue-200',
-                'dot' => 'bg-blue-500',
+                'bg' => 'bg-amber-100 text-amber-900 border-amber-200',
+                'dot' => 'bg-amber-700',
                 'text' => 'Jantan',
             ],
             'betina' => [
-                'bg' => 'bg-pink-50 text-pink-700 border-pink-200',
-                'dot' => 'bg-pink-500',
+                'bg' => 'bg-stone-200 text-stone-800 border-stone-300',
+                'dot' => 'bg-[#6B9080]',
                 'text' => 'Betina',
             ],
             'isolasi' => [
@@ -68,8 +91,8 @@ class Kandang extends Model
                 'text' => 'Isolasi / Sakit',
             ],
             default => [
-                'bg' => 'bg-gray-50 text-gray-700 border-gray-200',
-                'dot' => 'bg-gray-500',
+                'bg' => 'bg-stone-100 text-stone-700 border-stone-200',
+                'dot' => 'bg-stone-500',
                 'text' => ucfirst($this->kategori ?? '-'),
             ],
         };

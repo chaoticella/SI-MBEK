@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Kandang extends Model
 {
@@ -23,6 +24,14 @@ class Kandang extends Model
             'kapasitas_maksimal' => 'integer',
             'status_aktif' => 'boolean',
         ];
+    }
+
+    /**
+     * Relasi Modul 2: satu kandang memiliki banyak kambing
+     */
+    public function kambings(): HasMany
+    {
+        return $this->hasMany(Kambing::class);
     }
 
     /**

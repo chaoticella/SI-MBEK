@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KambingController;
 use App\Http\Controllers\KandangController;
+use App\Http\Controllers\PerkawinanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Web Routes - SI-MBEK (Sistem Informasi Manajemen & Peternakan Kambing)
 | Modul 1: Manajemen Pengguna & Kandang
+| Modul 2: Master Data Kambing & Silsilah/Breeding
 |--------------------------------------------------------------------------
 */
 
@@ -36,23 +39,15 @@ Route::middleware(['auth', 'role:pengelola,pegawai'])->group(function () {
     Route::get('/kandang', [KandangController::class, 'index'])->name('kandang.index');
     Route::get('/kandang/{kandang}', [KandangController::class, 'show'])->name('kandang.show')->whereNumber('kandang');
 
-    // Modul 2, 3, 4 Mock / Placeholder pages for full sidebar fidelity
-    Route::get('/kambing', function () {
-        return view('placeholders.module', [
-            'title' => 'Data Kambing',
-            'moduleName' => 'Modul 2: Data Kambing',
-            'description' => 'Halaman ini merupakan cakupan Modul 2 (Anggota 2) untuk mengelola data identitas utama kambing, ras, status ternak, dan penempatan kandang.'
-        ]);
-    })->name('kambing.index');
+    // Modul 2: Data Kambing - View Access for both Pengelola and Pegawai
+    Route::get('/kambing', [KambingController::class, 'index'])->name('kambing.index');
+    Route::get('/kambing/{kambing}', [KambingController::class, 'show'])->name('kambing.show')->whereNumber('kambing');
 
-    Route::get('/perkawinan', function () {
-        return view('placeholders.module', [
-            'title' => 'Data Perkawinan',
-            'moduleName' => 'Modul 3: Perkawinan & Kelahiran',
-            'description' => 'Halaman ini merupakan cakupan Modul 3 (Anggota 3) untuk mencatat riwayat perkawinan, penjodohan, dan tanggal melahirkan.'
-        ]);
-    })->name('perkawinan.index');
+    // Modul 2: Pencatatan Perkawinan - View Access for both Pengelola and Pegawai
+    Route::get('/perkawinan', [PerkawinanController::class, 'index'])->name('perkawinan.index');
+    Route::get('/perkawinan/{perkawinan}', [PerkawinanController::class, 'show'])->name('perkawinan.show')->whereNumber('perkawinan');
 
+    // Modul 3, 4 Mock / Placeholder pages for full sidebar fidelity
     Route::get('/kondisi-fisik', function () {
         return view('placeholders.module', [
             'title' => 'Kondisi Fisik Kambing',
@@ -78,6 +73,10 @@ Route::middleware(['auth', 'role:pengelola,pegawai'])->group(function () {
         Route::put('/kandang/{kandang}', [KandangController::class, 'update'])->name('kandang.update')->whereNumber('kandang');
         Route::delete('/kandang/{kandang}', [KandangController::class, 'destroy'])->name('kandang.destroy')->whereNumber('kandang');
         Route::patch('/kandang/{kandang}/toggle-status', [KandangController::class, 'toggleStatus'])->name('kandang.toggle-status')->whereNumber('kandang');
+
+        // Modul 2: Kambing & Perkawinan Write Operations (create, store, edit, update, destroy)
+        Route::resource('kambing', KambingController::class)->except(['index', 'show']);
+        Route::resource('perkawinan', PerkawinanController::class)->except(['index', 'show']);
 
         // User Management (Kelola Akun Pengelola & Pegawai)
         Route::resource('users', UserController::class)->except(['show']);

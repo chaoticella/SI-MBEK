@@ -33,6 +33,15 @@ class Kandang extends Model
 
     /**
      * Compatibility alias for id
+     * Relasi Modul 2: satu kandang memiliki banyak kambing
+     */
+    public function kambings(): HasMany
+    {
+        return $this->hasMany(Kambing::class);
+    }
+
+    /**
+     * Scope for active kandangs
      */
     public function getIdAttribute()
     {

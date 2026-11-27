@@ -9,19 +9,14 @@
         <button id="btn-sidebar" type="button" class="rounded-xl p-2 text-stone-600 hover:bg-[#F5F0E6] lg:hidden focus:outline-none transition-colors" aria-label="Buka Menu">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-
-        <div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF7F2] border border-[#ECE5DA] text-xs text-stone-600 font-medium">
-            <span>🐐</span>
-            <span>SI-MBEK Farm System</span>
-        </div>
     </div>
 
     <!-- Right: Notifikasi & Profil Pengguna -->
     <div class="flex items-center gap-3 sm:gap-4">
         <!-- Notifikasi Pemantauan Ternak (Lonceng) -->
         <div class="relative" x-data="{ open: false }">
-            <button @click="open = !open" 
-                    type="button" 
+            <button @click="open = !open"
+                    type="button"
                     class="relative p-2 text-stone-600 hover:text-stone-900 rounded-xl hover:bg-[#F5F0E6] focus:outline-none transition-colors"
                     aria-label="Notifikasi Kesehatan Ternak">
                 <i class="fa-regular fa-bell text-base"></i>
@@ -34,8 +29,8 @@
             </button>
 
             <!-- Dropdown Notifikasi -->
-            <div x-show="open" 
-                 @click.away="open = false" 
+            <div x-show="open"
+                 @click.away="open = false"
                  x-transition:enter="transition ease-out duration-100"
                  x-transition:enter-start="transform opacity-0 scale-95"
                  x-transition:enter-end="transform opacity-100 scale-100"
@@ -91,14 +86,14 @@
         <!-- Profil Pemilik / Pegawai -->
         @if(auth()->check())
         <div class="relative" x-data="{ userMenu: false }">
-            <button @click="userMenu = !userMenu" 
-                    type="button" 
+            <button @click="userMenu = !userMenu"
+                    type="button"
                     class="flex items-center gap-2.5 pl-1.5 pr-2.5 py-1.5 rounded-full hover:bg-[#FAF7F2] border border-transparent hover:border-[#ECE5DA] transition-all focus:outline-none">
                 <!-- Avatar -->
                 <div class="w-8 h-8 rounded-full bg-[#0D4231] text-white font-bold flex items-center justify-center text-xs shadow-2xs">
                     {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
                 </div>
-                
+
                 <!-- Info Profil -->
                 <div class="text-left hidden sm:block">
                     <p class="text-xs font-bold text-stone-800 leading-tight">
@@ -115,30 +110,11 @@
             </button>
 
             <!-- Dropdown Menu Profil -->
-            <div x-show="userMenu" 
-                 @click.away="userMenu = false" 
+            <div x-show="userMenu"
+                 @click.away="userMenu = false"
                  x-transition
                  class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-[#ECE5DA] py-2 z-50 text-xs"
                  style="display: none;">
-                <div class="px-4 py-2.5 border-b border-[#ECE5DA]">
-                    <p class="text-[11px] text-stone-400">Sedang aktif sebagai</p>
-                    <p class="text-xs font-bold text-stone-800 truncate mt-0.5">{{ auth()->user()->email }}</p>
-                    <p class="text-[11px] text-stone-500 capitalize mt-0.5">Peran: <strong>{{ auth()->user()->role_label }}</strong></p>
-                </div>
-
-                @if(auth()->user()->isPengelola())
-                    <a href="{{ route('users.index') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-stone-700 hover:bg-[#FAF7F2] transition-colors">
-                        <i class="fa-solid fa-users text-[#6B9080] w-4 text-center"></i>
-                        <span>Manajemen Pengguna</span>
-                    </a>
-                @endif
-
-                <a href="{{ route('kandang.index') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-stone-700 hover:bg-[#FAF7F2] transition-colors">
-                    <i class="fa-solid fa-warehouse text-[#6B9080] w-4 text-center"></i>
-                    <span>Data Kandang</span>
-                </a>
-
-                <div class="border-t border-[#ECE5DA] my-1"></div>
 
                 <!-- Form Logout -->
                 <form action="{{ route('logout') }}" method="POST" class="w-full">

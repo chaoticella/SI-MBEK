@@ -37,20 +37,20 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    @forelse($kambings as $kambing)
+                    @forelse($kambing as $item)
                         @php
-                            $statusStyle = match ($kambing->status) {
+                            $statusStyle = match ($item->status) {
                                 'indukan' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
                                 'anakan'  => 'bg-amber-50 text-amber-700 border-amber-200',
                                 default   => 'bg-blue-50 text-blue-700 border-blue-200',
                             };
-                            $statusLabel = ['indukan' => 'Indukan', 'anakan' => 'Anakan', 'siap_jual' => 'Siap Jual'][$kambing->status] ?? $kambing->status;
-                            $isJantan = $kambing->jenis_kelamin === 'jantan';
+                            $statusLabel = ['indukan' => 'Indukan', 'anakan' => 'Anakan', 'siap_jual' => 'Siap Jual'][$item->status] ?? $item->status;
+                            $isJantan = $item->jenis_kelamin === 'jantan';
                         @endphp
                         <tr class="hover:bg-gray-50/70 transition-colors">
-                            <td class="py-3.5 px-5 font-bold text-gray-800">{{ $kambing->kode_kambing }}</td>
+                            <td class="py-3.5 px-5 font-bold text-gray-800">{{ $item->kode_kambing }}</td>
 
-                            <td class="py-3.5 px-5 text-gray-700">{{ $kambing->ras }}</td>
+                            <td class="py-3.5 px-5 text-gray-700">{{ $item->ras }}</td>
 
                             <td class="py-3.5 px-5">
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border {{ $isJantan ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-pink-50 text-pink-700 border-pink-200' }}">
@@ -60,7 +60,7 @@
                             </td>
 
                             <td class="py-3.5 px-5 text-gray-600">
-                                {{ $kambing->tanggal_lahir ? $kambing->tanggal_lahir->format('d M Y') : '-' }}
+                                {{ $item->tanggal_lahir ? $item->tanggal_lahir->format('d M Y') : '-' }}
                             </td>
 
                             <td class="py-3.5 px-5">
@@ -70,27 +70,27 @@
                             </td>
 
                             <td class="py-3.5 px-5 text-gray-700">
-                                {{ $kambing->kandang->blok_kandang ?? '-' }}
+                                {{ $item->kandang->blok_kandang ?? '-' }}
                             </td>
 
                             <td class="py-3.5 px-5 text-right font-medium">
                                 <div class="inline-flex items-center gap-3">
-                                    <a href="{{ route('kambing.show', $kambing->id) }}"
+                                    <a href="{{ route('kambing.show', $item->id_kambing) }}"
                                        class="text-gray-600 hover:text-gray-900 text-xs font-semibold hover:underline">
                                         Detail
                                     </a>
 
                                     @if(auth()->user()->isPengelola())
-                                        <a href="{{ route('kambing.edit', $kambing->id) }}"
+                                        <a href="{{ route('kambing.edit', $item->id_kambing) }}"
                                            class="text-blue-600 hover:text-blue-800 text-xs font-semibold hover:underline">
                                             Edit
                                         </a>
 
-                                        <form action="{{ route('kambing.destroy', $kambing->id) }}" method="POST" class="inline">
+                                        <form action="{{ route('kambing.destroy', $item->id_kambing) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                    onclick="return confirm('Hapus kambing {{ $kambing->kode_kambing }} dari sistem?')"
+                                                    onclick="return confirm('Hapus kambing {{ $item->kode_kambing }} dari sistem?')"
                                                     class="text-red-500 hover:text-red-700 text-xs font-semibold hover:underline">
                                                 Hapus
                                             </button>
@@ -112,9 +112,9 @@
             </table>
         </div>
 
-        @if($kambings->hasPages())
+        @if($kambing->hasPages())
             <div class="p-4 border-t border-gray-100 bg-gray-50/50">
-                {{ $kambings->links() }}
+                {{ $kambing->links() }}
             </div>
         @endif
     </div>

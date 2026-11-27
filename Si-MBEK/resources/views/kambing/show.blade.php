@@ -12,7 +12,7 @@
             <h3 class="text-base font-bold text-gray-800">Identitas Kambing</h3>
             <div class="flex items-center gap-2">
                 @if(auth()->user()->isPengelola())
-                    <a href="{{ route('kambing.edit', $kambing->id) }}"
+                    <a href="{{ route('kambing.edit', $kambing->id_kambing) }}"
                        class="px-3 py-1.5 rounded-xl bg-[#00875a] hover:bg-[#00734c] text-white text-xs font-semibold transition-colors">
                         Edit
                     </a>

@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('perkawinans', function (Blueprint $table) {
-        $table->id();
-        $table->date('tanggal_kawin');
-        $table->foreignId('pejantan_id')->constrained('kambings')->restrictOnDelete();
-        $table->foreignId('indukan_id')->constrained('kambings')->restrictOnDelete();
-        $table->date('estimasi_melahirkan')->nullable();
-        $table->unsignedInteger('jumlah_anak_lahir')->default(0);
-        $table->timestamps();
-    });
+        Schema::create('perkawinan', function (Blueprint $table) {
+            $table->id();
+            $table->date('tanggal_kawin');
+            $table->foreignId('pejantan_id')->constrained('kambing', 'id_kambing')->restrictOnDelete();
+            $table->foreignId('indukan_id')->constrained('kambing', 'id_kambing')->restrictOnDelete();
+            $table->date('estimasi_melahirkan')->nullable();
+            $table->unsignedInteger('jumlah_anak_lahir')->default(0);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('perkawinans');
+        Schema::dropIfExists('perkawinan');
     }
 };

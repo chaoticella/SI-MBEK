@@ -15,9 +15,9 @@ class KambingController extends Controller
      */
     public function index()
     {
-        $kambings = Kambing::with('kandang')->latest()->paginate(10);
+        $kambing = Kambing::with('kandang')->latest()->paginate(10);
 
-        return view('kambing.index', compact('kambings'));
+        return view('kambing.index', compact('kambing'));
     }
 
     /**
@@ -25,9 +25,9 @@ class KambingController extends Controller
      */
     public function create()
     {
-        $kandangs = Kandang::aktif()->get();
+        $kandang = Kandang::aktif()->get();
 
-        return view('kambing.create', compact('kandangs'));
+        return view('kambing.create', compact('kandang'));
     }
 
     /**

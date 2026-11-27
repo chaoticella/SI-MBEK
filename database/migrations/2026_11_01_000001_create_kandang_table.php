@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kandangs', function (Blueprint $table) {
-            $table->id();
-            $table->string('blok_kandang');
+        Schema::create('kandang', function (Blueprint $table) {
+            $table->id('id_kandang');
+            $table->string('blok_kandang', 50);
             $table->integer('kapasitas_maksimal');
             $table->enum('kategori', ['jantan', 'betina', 'isolasi']);
             $table->boolean('status_aktif')->default(true);
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kandangs');
+        Schema::dropIfExists('kandang');
     }
 };

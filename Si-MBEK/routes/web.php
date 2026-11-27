@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KambingController;
 use App\Http\Controllers\KandangController;
+use App\Http\Controllers\KondisiFisikController;
+use App\Http\Controllers\PenyakitController;
 use App\Http\Controllers\PerkawinanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +40,34 @@ Route::middleware(['auth', 'role:pengelola,pegawai'])->group(function () {
     // Data Kandang - View Access for both Pengelola and Pegawai
     Route::get('/kandang', [KandangController::class, 'index'])->name('kandang.index');
     Route::get('/kandang/{kandang}', [KandangController::class, 'show'])->name('kandang.show')->whereNumber('kandang');
+
+    // Modul 3 Kesehatan & Pencatatan Penyakit (Terintegrasi)
+    Route::get('kondisi-fisik/terakhir/{kambing}', [KondisiFisikController::class, 'terakhir'])
+        ->name('kondisi-fisik.terakhir');
+    Route::resource('kondisi-fisik', KondisiFisikController::class)
+        ->parameters(['kondisi-fisik' => 'kondisi']);
+
+    Route::patch('penyakit/{penyakit}/sembuh', [PenyakitController::class, 'sembuh'])
+        ->name('penyakit.sembuh');
+    Route::resource('penyakit', PenyakitController::class)
+        ->parameters(['penyakit' => 'penyakit']);
+
+    // Placeholders for Modul 2 & Perkawinan
+    Route::get('/kambing', function () {
+        return view('placeholders.module', [
+            'title' => 'Data Kambing',
+            'moduleName' => 'Modul 2: Data Kambing',
+            'description' => 'Halaman ini merupakan cakupan Modul 2 untuk mengelola data identitas utama kambing, ras, status ternak, dan penempatan kandang.'
+        ]);
+    })->name('kambing.index');
+
+    Route::get('/perkawinan', function () {
+        return view('placeholders.module', [
+            'title' => 'Data Perkawinan',
+            'moduleName' => 'Modul 3: Perkawinan & Kelahiran',
+            'description' => 'Halaman ini merupakan cakupan Modul Perkawinan & Kelahiran untuk mencatat riwayat perkawinan, penjodohan, dan tanggal melahirkan.'
+        ]);
+    })->name('perkawinan.index');
 
     // Modul 2: Data Kambing - View Access for both Pengelola and Pegawai
     Route::get('/kambing', [KambingController::class, 'index'])->name('kambing.index');
